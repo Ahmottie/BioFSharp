@@ -104,7 +104,7 @@ module PhredQualityScoreTests =
                 Expect.throwsT<System.ArgumentException> (fun () -> Phred.meanByErrorProbability [] |> ignore) "Mean by error probability of no scores was calculated."
                 Expect.throwsT<System.ArgumentException> (fun () -> Phred.fractionAtLeast 30 [] |> ignore) "Fraction of no scores was calculated."
 
-            testCase "tryDetectEncoding" <| fun () ->
+            testCase "tryDetectEncoding_Phred33" <| fun () ->
                 Expect.equal (Phred.tryDetectEncoding "II9IC#") (Some Phred.Encoding.Phred33) "Phred+33 was not detected."
                 Expect.equal (Phred.tryDetectEncoding "!") (Some Phred.Encoding.Phred33) "Lowest Phred+33 character was not detected."
                 Expect.equal (Phred.tryDetectEncoding "IIII?") (Some Phred.Encoding.Phred33) "Highest Phred+33-only character '?' was not detected."
@@ -124,4 +124,5 @@ module PhredQualityScoreTests =
             testCase "tryDetectEncoding_invalidInput" <| fun () ->
                 Expect.equal (Phred.tryDetectEncoding "") None "Empty input should not be detected."
                 Expect.equal (Phred.tryDetectEncoding "II\tII") None "Invalid characters should not be detected."
+                Expect.equal (Phred.tryDetectEncoding "#II\tII") None "Invalid characters should not be detected, even with Phred+33-only characters."
         ]

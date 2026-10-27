@@ -71,8 +71,8 @@ module Phred =
     let fractionAtLeast (threshold: int) (scores: seq<int>) : float =
         scores |> Seq.averageBy (fun score -> if score >= threshold then 1. else 0.)
 
-    /// Guesses the encoding of the given quality characters by the lowest character
-    /// Returns None if chars is empty or contains characters outside '!' to '~'
+    /// Returns Some Phred33 if the given quality characters contain a character below ASCII 64
+    /// Returns None if the input is ambiguous and characters outside of '!' to '~'
     let tryDetectEncoding (chars: seq<char>) : Encoding option =
         let folder (allValid, hasPhred33OnlyChar) c =
             allValid && c >= '!' && c <= '~', hasPhred33OnlyChar || c < '@'
