@@ -95,7 +95,7 @@ module PDB =
                 let residueName             = line.[17..19] |> emptyToOpt 
                 let chainIdentifier         = line.[21..21] |> emptyToOpt 
                 let residueSequenceNumber   = line.[22..25] |> emptyToOpt |> Option.map int
-                let residueInsertionCode    = line.[27..27] |> emptyToOpt 
+                let residueInsertionCode    = line.[26..26] |> emptyToOpt 
 
                 Some (
                     Terminator.create(
