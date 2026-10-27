@@ -74,15 +74,9 @@ module Phred =
     /// Guesses the encoding of the given quality characters by the lowest character
     /// Returns None if chars is empty or contains characters outside '!' to '~'
     let tryDetectEncoding (chars: seq<char>) : Encoding option =
-        let range =
-            chars
-            |> Seq.fold (fun range c ->
-                match range with
-                | None -> Some (c, c)
-                | Some (lowest, highest) -> Some (min lowest c, max highest c)
-            ) None
-        match range with
-        | Some (lowest, highest) when lowest >= '!' && highest <= '~' ->
-            if lowest < '@' then Some Encoding.Phred33 else Some Encoding.Phred64
+        let folder (allValid, hasPhred33OnlyChar) c =
+            allValid && c >= '!' && c <= '~', hasPhred33OnlyChar || c < '@'
+        match chars |> Seq.fold folder (true, false) with
+        | true, true -> Some Encoding.Phred33
         | _ -> None
         
