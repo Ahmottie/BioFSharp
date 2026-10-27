@@ -106,7 +106,22 @@ module PhredQualityScoreTests =
 
             testCase "tryDetectEncoding" <| fun () ->
                 Expect.equal (Phred.tryDetectEncoding "II9IC#") (Some Phred.Encoding.Phred33) "Phred+33 was not detected."
-                Expect.equal (Phred.tryDetectEncoding "hhTB@") (Some Phred.Encoding.Phred64) "Phred+64 was not detected."
+                Expect.equal (Phred.tryDetectEncoding "!") (Some Phred.Encoding.Phred33) "Lowest Phred+33 character was not detected."
+                Expect.equal (Phred.tryDetectEncoding "IIII?") (Some Phred.Encoding.Phred33) "Highest Phred+33-only character '?' was not detected."
+
+            testCase "tryDetectEncoding_ambiguous" <| fun () ->
+                Expect.equal (Phred.tryDetectEncoding "IIII") None "'IIII' is Q40 in Phred+33 and Q9 in Phred+64 and should not be detected."
+                Expect.equal (Phred.tryDetectEncoding "hhTB@") None "Valid Phred+64 is also valid Phred+33 and should not be detected."
+                Expect.equal (Phred.tryDetectEncoding "~~~~") None "Q93 in Phred+33 is also valid Phred+64 and should not be detected."
+                Expect.equal (Phred.tryDetectEncoding "@") None "'@' is valid in both encodings and should not be detected."
+
+            testCase "toScores_ambiguousInput" <| fun () ->
+                let phred33 = Phred.toScores Phred.Encoding.Phred33 "IIII"
+                let phred64 = Phred.toScores Phred.Encoding.Phred64 "IIII"
+                Expect.equal phred33 [|40; 40; 40; 40|] "'IIII' was converted incorrectly as Phred+33."
+                Expect.equal phred64 [|9; 9; 9; 9|] "'IIII' was converted incorrectly as Phred+64."
+
+            testCase "tryDetectEncoding_invalidInput" <| fun () ->
                 Expect.equal (Phred.tryDetectEncoding "") None "Empty input should not be detected."
                 Expect.equal (Phred.tryDetectEncoding "II\tII") None "Invalid characters should not be detected."
         ]
