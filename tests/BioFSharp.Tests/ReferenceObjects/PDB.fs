@@ -58,6 +58,18 @@ module PDB =
             """TER       2      ALA A   1""".PadRight(80, ' ')
             """ENDMDL""".PadRight(80, ' ')
         |]
+        
+    let heteroOrderSequence =
+        [|
+            """ATOM      1  N   ALA A   1      11.104   6.134  -6.504  1.00  0.00           N  """
+            """TER       2      ALA A   1""".PadRight(80, ' ')
+            """ATOM      3  N   GLY B   1      11.104   6.134  -6.504  1.00  0.00           N  """
+            """TER       4      GLY B   1""".PadRight(80, ' ')
+            """HETATM    5 FE   HEM A 201      11.104   6.134  -6.504  1.00  0.00          FE  """
+            """HETATM    6 FE   HEM B 201      11.104   6.134  -6.504  1.00  0.00          FE  """
+            """HETATM    7  O   HOH A 301      11.104   6.134  -6.504  1.00  0.00           O  """
+            """HETATM    8  O   HOH B 301      11.104   6.134  -6.504  1.00  0.00           O  """
+        |]
 
     let terNucleotide = """TER     487       DA B  24""".PadRight(80, ' ')
 

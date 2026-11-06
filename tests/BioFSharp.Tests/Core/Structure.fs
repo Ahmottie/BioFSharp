@@ -90,6 +90,10 @@ module StructureTests =
             testCase "Models roundtrip" (fun () ->
                 Expect.sequenceEqual (roundtrip modelSequenceWithTerminators) modelSequenceWithTerminators "Model structure roundtrip unsuccessful"
             )
+            
+            testCase "Hetero order roundtrip" (fun () ->
+                Expect.sequenceEqual (roundtrip heteroOrderSequence) heteroOrderSequence "Hetero residues should be written in their original order"
+            )
 
             testCase "Empty structure" (fun () ->
                 Expect.isEmpty (Structure.toCoordinates { Models = [||] }) "Empty structure should give no coordinates"

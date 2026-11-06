@@ -147,8 +147,10 @@ module Structure =
             model.Chains
             |> Array.collect (fun chain ->
                 let start = match polymerEnd chain with Some i -> i + 1 | None -> 0
-                chain.Residues.[start..] |> Array.collect residueCoordinates
+                chain.Residues.[start..]
             )
+            |> Array.sortBy (fun residue -> residue.Atoms.[0].SerialNumber)
+            |> Array.collect residueCoordinates
         Array.append polymers heteros
 
     let toCoordinates (structure: Structure) =
