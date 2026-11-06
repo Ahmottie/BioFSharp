@@ -125,6 +125,7 @@
     <Compile Include="Formatting.fs" />
     <None Include="Playground.fsx" />
     <Compile Include="PhredQualityScore.fs" />
+    <Compile Include="Structure.fs" />
     <!-- Playground -->
   </ItemGroup>
   <ItemGroup>
